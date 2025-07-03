@@ -76,7 +76,6 @@ pub fn codegen(input: TokenStream) -> TokenStream {
             fn iter() -> #iter_ident {
                 #iter_ident {
                     inner: (#name::#first as #repr)..=(#name::#last as #repr),
-                    _tag: std::marker::PhantomData::default(),
                 }
             }
         }
@@ -89,7 +88,6 @@ pub fn codegen(input: TokenStream) -> TokenStream {
 
         struct #iter_ident {
             inner: std::ops::RangeInclusive<#repr>,
-            _tag: std::marker::PhantomData<#name>,
         }
 
         impl Iterator for #iter_ident {
