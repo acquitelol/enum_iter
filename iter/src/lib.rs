@@ -68,33 +68,11 @@ pub fn codegen(input: TokenStream) -> TokenStream {
     let first = data_enum.variants.first().unwrap();
     let last = data_enum.variants.last().unwrap();
 
-    let iter_ident_str = format!("{}{}", name, "__iter");
-    let iter_ident: Ident = parse_str(&iter_ident_str).unwrap();
-
     let expanded = quote! {
         impl #name {
-            fn iter() -> #iter_ident {
-                #iter_ident {
-                    inner: (#name::#first as #repr)..=(#name::#last as #repr),
-                }
-            }
-        }
-
-        impl From<#repr> for #name {
-            fn from(x: #repr) -> Self {
-                unsafe { std::mem::transmute(x) }
-            }
-        }
-
-        struct #iter_ident {
-            inner: std::ops::RangeInclusive<#repr>,
-        }
-
-        impl Iterator for #iter_ident {
-            type Item = #name;
-
-            fn next(&mut self) -> Option<#name> {
-                self.inner.next().map(|x| #name::from(x))
+            fn iter() -> core::iter::Map<core::ops::RangeInclusive<#repr>, impl FnMut(#repr) -> #name> {
+                ((#name::#first as #repr)..=(#name::#last as #repr))
+                    .map(|x| unsafe { core::mem::transmute::<#repr, #name>(x) })
             }
         }
     };
