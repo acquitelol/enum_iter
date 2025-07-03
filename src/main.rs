@@ -1,4 +1,3 @@
-#![feature(step_trait)]
 use iter::Iter;
 
 #[repr(u8)]
@@ -10,8 +9,10 @@ enum Foo {
 
 #[repr(i32)]
 #[derive(Debug, Iter)]
+#[allow(unused)]
 enum Bar {
     A,
+    B,
     C,
     D,
     E,
@@ -23,6 +24,8 @@ fn main() {
     for x in Foo::iter() {
         dbg!(x);
     }
+
+    println!();
 
     for x in Bar::iter() {
         dbg!(x);

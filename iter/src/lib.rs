@@ -3,7 +3,7 @@ use quote::quote;
 use syn::{
     Attribute, Data, DeriveInput, Ident, Result, Token,
     parse::{Parse, ParseStream},
-    parse_macro_input, parse_str,
+    parse_macro_input,
 };
 
 struct ReprArgs {
